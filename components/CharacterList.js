@@ -3,6 +3,16 @@ import styled from 'styled-components/native';
 import { FlatList, ActivityIndicator, View } from 'react-native';
 import { CHARACTERS_URL } from '../utils/urls';
 
+const Container = styled.View`
+  background-color: #303054;
+  padding: 60px 30px;
+`;
+
+const Title = styled.Text`
+  font-size: 40px;
+  color: #a1d12b;
+`;
+
 const CharacterContainer = styled.View`
   display: flex;
   flex-direction: row;
@@ -40,7 +50,7 @@ const CharacterStatus = styled.Text`
   color: #f4f7ed;
 `;
 
-const CharacterList = () => {
+const CharacterList = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [characters, setCharacters] = useState({});
 
@@ -63,7 +73,8 @@ const CharacterList = () => {
   }
 
   return (
-    <View>
+    <Container>
+      <Title>Pick Your Rick</Title>
       <FlatList
         data={characters}
         renderItem={({ item }) => (
@@ -75,7 +86,14 @@ const CharacterList = () => {
               }}
             />
             <CharacterInfo>
-              <CharacterName>{item.name}</CharacterName>
+              <CharacterName
+                onPress={() =>
+                  /* Linking.openURL('https://rickandmortyapi.com/api/character/') */
+                  navigation.navigate('Your Rick')
+                }
+              >
+                {item.name}
+              </CharacterName>
               <CharacterSpecies>Species: {item.species}</CharacterSpecies>
               <CharacterStatus>Status: {item.status}</CharacterStatus>
             </CharacterInfo>
@@ -85,7 +103,7 @@ const CharacterList = () => {
         // Solution to let the flatlist scroll down to the last element
         ListFooterComponent={<View style={{ height: 80 }} />}
       />
-    </View>
+    </Container>
   );
 };
 
